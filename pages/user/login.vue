@@ -17,10 +17,10 @@
                         {{item}}
                     </span>
                 </el-row>
-                <loginFrom/>>
+                <loginFrom v-if="currentTab == 0"/>
                 <!-- 登录功能组件 -->
                 <!-- <LoginForm v-if="currentTab == 0"/> -->
-
+                <registerForm v-if="currentTab == 1"/>
                 <!-- 注册功能组件 -->
                 <!-- <RegisterForm v-if="currentTab == 1"/> -->
             </div>
@@ -29,7 +29,8 @@
 </template>
 
 <script>
-import loginFrom from '../../components/loginForm'
+import loginFrom from '@/components/loginForm'
+import registerForm from '@/components/registerForm'
 export default {
     data(){
         return {
@@ -37,10 +38,11 @@ export default {
         }
     },
     components:{
-        loginFrom
+        loginFrom,registerForm
     },
     methods: {
         handleChangeTab(index){
+            console.log(index)
             this.currentTab = index;
         },
     }

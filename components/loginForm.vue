@@ -5,16 +5,19 @@
         :rules="rules" 
         class="form">
 
-        <el-form-item class="form-item">
+        <el-form-item class="form-item" prop="username">
             <el-input 
-            placeholder="用户名/手机">
+            placeholder="用户名/手机"
+             v-model="form.username">
             </el-input>
         </el-form-item>
 
-        <el-form-item class="form-item">
+        <el-form-item class="form-item" prop="password">
             <el-input 
             placeholder="密码" 
-            type="password">
+            type="password"
+            v-model="form.password"
+           >
             </el-input>
         </el-form-item>
 
@@ -35,18 +38,47 @@
 <script>
 export default {
     data(){
+        var validatePass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('用户名不能为空'));
+        } else {
+          var reg = /^1[3-9]\d{9}$/
+          if (reg.test(value)) {
+            callback();
+          }else{
+              callback(new Error('请输入正确的用户名'));
+          }
+          
+        }
+      };
         return {
             // 表单数据
-            form: {},
+            form: {
+                username:'13800138000',
+                password:'123456'
+            },
             // 表单规则
-            rules: {},
+            rules: {
+               username:[{ validator: validatePass, trigger: 'blur' }],
+               password:[{ required: true, message: '密码不能为空', trigger: 'blur' },]
+            },
         }
     },
     methods: {
         // 提交登录
         handleLoginSubmit(){
-           this.$store.commit('user/setname',"123123")
+        //    this.$store.commit('user/setname')
         //    this.$store
+        this.$refs["form"].validate((valid) => {
+          console.log(valid)
+          if(!valid) return
+
+          this.$store.dispatch("user/login",this.form).then(res=>{
+              if(res){
+                  this.$message.success("登陆成功")
+              }
+          })
+        });
         }
     }
 }
