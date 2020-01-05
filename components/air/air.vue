@@ -194,6 +194,7 @@ export default {
               }
            })
            if(list === false) return
+           this.$store.commit("air/searchHistory",this.form)
            console.log(this.$router.app)
            this.$router.push({
                path: "/air/flights",

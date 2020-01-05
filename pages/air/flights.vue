@@ -71,6 +71,27 @@ export default {
     components:{
         headers,flightsItem,flightsFilters,flightsAside
     },
+    watch:{
+        $route(){
+             this.$axios({
+             url:'/airs',
+             params:this.$route.query
+           }).then(res=>{
+             const {flights,info,options,total} = res.data
+             setTimeout(()=>{
+                this.flightsData = res.data
+                this.cacheflightsData = {...res.data}
+                // this.flightsList = this.flights.slice(0,5)
+                this.total = this.flightsData.total;
+                this.currentPage = 1
+                // this.info = info
+                // this.options = options
+                // this.total = total
+             },1)
+            
+           })
+        }
+    },
     computed:{
         flightsList(){
             if(!this.flightsData.flights) return []
